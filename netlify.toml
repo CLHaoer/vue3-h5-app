@@ -2,7 +2,7 @@
 
 [build]
   # 构建命令
-  command = "pnpm build"
+  command = "pnpm build-only"
   
   # 构建输出目录
   publish = "dist"
