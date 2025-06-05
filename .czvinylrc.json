@@ -1,0 +1,68 @@
+{
+  "commitTypes": [
+    {
+      "description": "重大变更",
+      "emoji": "💥",
+      "value": "breaking"
+    },
+    {
+      "description": "构建流程或辅助工具变动",
+      "emoji": "🤖",
+      "value": "chore"
+    },
+    {
+      "description": "CI 相关变更",
+      "emoji": "🚀",
+      "value": "ci"
+    },
+    {
+      "description": "仅文档变更",
+      "emoji": "📘",
+      "value": "docs"
+    },
+    {
+      "description": "新增功能",
+      "emoji": "🔥",
+      "value": "feat"
+    },
+    {
+      "description": "修复 Bug",
+      "emoji": "🐞",
+      "value": "fix"
+    },
+    {
+      "description": "性能优化",
+      "emoji": "⚡",
+      "value": "perf"
+    },
+    {
+      "description": "代码重构（既不是修复 bug 也不是新增功能）",
+      "emoji": "💡",
+      "value": "refactor"
+    },
+    {
+      "description": "创建发布版本提交",
+      "emoji": "🔖",
+      "value": "release"
+    },
+    {
+      "description": "标记、空白、格式化、缺失分号等",
+      "emoji": "🎨",
+      "value": "style"
+    },
+    {
+      "description": "新增测试",
+      "emoji": "✅",
+      "value": "test"
+    }
+  ],
+  "headerFormat": "{type}: {emoji} {subject}",
+  "typeQuestion": "请选择提交类型",
+  "subjectQuestion": "请输入提交信息",
+  "scopeQuestion": "请输入提交改动的范围（可跳过）",
+  "skipScope": true,
+  "bodyQuestion": "请输入提交的详细描述（可跳过）",
+  "sikpBody": false,
+  "ticketIdQuestion": "请输入相关的 Ticket ID（可跳过）",
+  "skipTicketId": true
+}

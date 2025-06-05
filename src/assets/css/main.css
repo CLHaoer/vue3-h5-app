@@ -1,0 +1,16 @@
+/*tailwindcs 样式*/
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*custom 自定义的样式*/
+#app{
+  font-size: 14px;
+  height: 100%;
+  position: relative;
+}
+ /*View Transition API 主题切换动画 */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
