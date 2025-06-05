@@ -11,6 +11,10 @@ export default function rollupOptions(): Rollup.RollupOptions {
         if (imgExt.some((ext) => name.endsWith(`.${ext}`))) return 'img/[name]-[hash][extname]'
         return 'assets/[name]-[hash][extname]'
       },
+      manualChunks: {
+        vendor: ['vue', 'vue-router', 'pinia'],
+        ui: ['vant'],
+      },
     },
   }
 }

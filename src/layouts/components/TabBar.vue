@@ -4,7 +4,7 @@ const { tabbarConfig, tabbarList, isShow } = storeToRefs(useTabbar())
 </script>
 
 <template>
-  <van-tabbar v-show="isShow" v-bind="tabbarConfig">
+  <van-tabbar v-if="isShow" v-bind="tabbarConfig">
     <van-tabbar-item v-for="item in tabbarList" :key="item.name" v-bind="item">
       {{ item.name }}
       <template #icon="{ active }">

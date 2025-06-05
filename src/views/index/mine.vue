@@ -6,9 +6,7 @@ definePage({
   name: 'mine',
   meta: {
     title: '我的',
-    navbar: {
-      leftArrow: false,
-    },
+    navbar: false,
   },
 })
 
@@ -70,12 +68,12 @@ const menuList = ref([
 ])
 
 // 处理菜单点击
-const handleMenuClick = (item: any) => {
+const handleMenuClick = (item: (typeof menuList.value)[number]['items'][number]) => {
   showToast(`点击了${item.title}`)
 }
 
 // 处理统计点击
-const handleStatClick = (stat: any) => {
+const handleStatClick = (stat: (typeof userStats.value)[number]) => {
   showToast(`查看${stat.label}`)
 }
 

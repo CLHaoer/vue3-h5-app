@@ -6,7 +6,7 @@ const keepAlivePages = computed(() => routeStore.keepAlivePages)
 </script>
 
 <template>
-  <Layout class="bg-amber-400">
+  <Layout>
     <NuxtPage :include="keepAlivePages" />
   </Layout>
 </template>

@@ -1,5 +1,5 @@
 {
-  "name": "vue3-h5-demo",
+  "name": "vue3-h5-app",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -11,7 +11,6 @@
     "dev": "vite --host",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
-    "test:unit": "vitest",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",

@@ -11,10 +11,12 @@ export const useTheme = defineStore(
       })
     }
     // init Theme
-    setHtmlAttr(ThemeIsDark.value)
-    match.addEventListener('change', () => {
-      if (ThemeIsDark.value === match.matches) return
-      toggleTheme()
+    nextTick().then(() => {
+      setHtmlAttr(ThemeIsDark.value)
+      match.addEventListener('change', () => {
+        if (ThemeIsDark.value === match.matches) return
+        toggleTheme()
+      })
     })
     return { ThemeIsDark, toggleTheme }
   },
