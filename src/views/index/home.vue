@@ -75,7 +75,7 @@ const handleThemeToggle = () => {
           @click="handleStatClick(stat)"
         >
           <div
-            class="w-[40px] h-[40px] bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mr-[12px]"
+            class="w-[40px] h-[40px] bg-gray-100 dark:bg-gray-700 rounded-[50%] flex items-center justify-center mr-[12px]"
           >
             <van-icon :name="stat.icon" size="20" class="text-blue-500" />
           </div>

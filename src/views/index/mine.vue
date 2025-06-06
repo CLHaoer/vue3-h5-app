@@ -115,7 +115,7 @@ const handleThemeToggle = () => {
               class="border-2 border-white/20"
             />
             <div
-              class="absolute -bottom-[-4px] -right-[4px] w-[20px] h-[20px] bg-green-500 rounded-full border-2 border-white"
+              class="absolute -bottom-[-4px] -right-[4px] w-[20px] h-[20px] bg-green-500 rounded-[50%] border-2 border-white"
             ></div>
           </div>
 
