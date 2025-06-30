@@ -3,14 +3,18 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/*custom 自定义的样式*/
+/*custom 自定义的样式--------------------------------*/
+body{
+  @apply bg-gray-50 dark:bg-gray-900;
+}
 #app{
   font-size: 14px;
   height: 100%;
   position: relative;
 }
- /*View Transition API 主题切换动画 */
+/*View Transition API 主题切换动画 */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
 }
+/*custom 自定义的样式--------------------------------*/

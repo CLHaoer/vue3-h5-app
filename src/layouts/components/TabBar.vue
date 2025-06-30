@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Icon } from '@iconify/vue'
 import { useTabbar } from '@/stores'
 const { tabbarConfig, tabbarList, isShow } = storeToRefs(useTabbar())
 </script>
@@ -8,7 +9,7 @@ const { tabbarConfig, tabbarList, isShow } = storeToRefs(useTabbar())
     <van-tabbar-item v-for="item in tabbarList" :key="item.name" v-bind="item">
       {{ item.name }}
       <template #icon="{ active }">
-        <RIcon :id="item.icon" :icon="`${item.iconPrefix}${item.icon}`" :class="{ active }" />
+        <Icon :id="item.icon" :icon="`${item.iconPrefix}${item.icon}`" :class="{ active }" />
       </template>
     </van-tabbar-item>
   </van-tabbar>

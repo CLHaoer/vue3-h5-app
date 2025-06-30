@@ -28,6 +28,15 @@ export default defineConfig(({ mode }): UserConfig => {
     build: {
       outDir: Env.VITE_OUT_DIR,
       rollupOptions: rollupOptions(),
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+        },
+      },
+      sourcemap: !!Env?.VITE_SOURCEMAP,
+      cssCodeSplit: true,
+      chunkSizeWarningLimit: 2000,
     },
   }
 })

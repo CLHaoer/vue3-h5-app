@@ -21,6 +21,4 @@ export const loadPlugins = (instance: APP<Element>): APP<Element> => {
   return instance.use(router).use(pinia)
 }
 
-setTimeout(() => {
-  loadPlugins(app).mount('#app')
-}, 1000)
+loadPlugins(app).mount('#app')
