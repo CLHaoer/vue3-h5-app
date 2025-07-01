@@ -42,47 +42,31 @@ const showNavBgc = computed(() => {
     ? `rgba(16,24,40,${opacity})` // dark:bg-gray-900
     : `rgba(251,249,250,${opacity})` // bg-gray-50
 })
-const scrollRef = useTemplateRef<HTMLElement | null>('scroll-container')
+// 用户背景图片放大效果逻辑
+const html = document.documentElement
 const pullDistance = ref(0)
 let startY = 0
 let isTouching = false
-
-const onTouchStart = (e: TouchEvent) => {
-  if (scrollRef.value && scrollRef.value.scrollTop <= 0) {
-    isTouching = true
-    startY = e.touches[0].clientY
-  }
-}
-const onTouchMove = (e: TouchEvent) => {
-  if (!isTouching) return
-  const deltaY = e.touches[0].clientY - startY
-  if (deltaY > 0) {
-    pullDistance.value = Math.min(deltaY, 150) // 最大下拉120px
-    e.preventDefault() // 阻止浏览器下拉刷新
-  }
-}
-const onTouchEnd = () => {
-  isTouching = false
-  pullDistance.value = 0
-}
-
-onMounted(() => {
-  const el = scrollRef.value
-  if (el) {
-    el.addEventListener('touchstart', onTouchStart, { passive: false })
-    el.addEventListener('touchmove', onTouchMove, { passive: false })
-    el.addEventListener('touchend', onTouchEnd)
-  }
+useTouch({
+  touchstart(e) {
+    if (html && html.scrollTop <= 0) {
+      isTouching = true
+      startY = e.touches[0].clientY
+    }
+  },
+  touchmove(e) {
+    if (!isTouching) return
+    const deltaY = e.touches[0].clientY - startY
+    if (deltaY > 0) {
+      pullDistance.value = Math.min(deltaY / 3, 150) // 阻尼为3 最大下拉150px
+      if (e.cancelable) e.preventDefault() // 阻止浏览器下拉刷新
+    }
+  },
+  touchend() {
+    isTouching = false
+    pullDistance.value = 0
+  },
 })
-onUnmounted(() => {
-  const el = scrollRef.value
-  if (el) {
-    el.removeEventListener('touchstart', onTouchStart)
-    el.removeEventListener('touchmove', onTouchMove)
-    el.removeEventListener('touchend', onTouchEnd)
-  }
-})
-
 const userAreaHeight = computed(() => {
   return `${(220 + pullDistance.value) / 100}rem`
 })
@@ -90,7 +74,7 @@ const userAreaHeight = computed(() => {
 
 <template>
   <!-- 整体 -->
-  <div ref="scroll-container" class="scroll-container h-dvh overflow-y-auto">
+  <div class="h-dvh">
     <!-- 吸顶导航栏 -->
     <div
       :style="{ backgroundColor: showNavBgc }"
@@ -103,7 +87,7 @@ const userAreaHeight = computed(() => {
       >
       <div
         :class="{ 'text-gray-800': !ThemeIsDark && navTitleOpacity }"
-        class="flex items-center text-gray-200 gap-[12px] pointer-events-auto ml-auto"
+        class="flex items-center text-gray-200 gap-[10px] pointer-events-auto ml-auto"
       >
         <r-icon
           @click="handleThemeToggle"
@@ -112,12 +96,14 @@ const userAreaHeight = computed(() => {
               ? 'line-md:moon-alt-to-sunny-outline-loop-transition'
               : 'line-md:sunny-outline-to-moon-alt-loop-transition'
           "
-          class="text-[22px] cursor-pointer"
+          :class="{ 'bg-transparent': navTitleOpacity }"
+          class="cursor-pointer"
         />
         <r-icon
           @click="handleSettingsClick"
           icon="ph:gear-six-bold"
-          class="text-[22px] cursor-pointer"
+          :class="{ 'bg-transparent': navTitleOpacity }"
+          class="cursor-pointer"
         />
       </div>
     </div>
@@ -129,7 +115,10 @@ const userAreaHeight = computed(() => {
     >
       <!-- 背景 -->
       <div class="absolute inset-0 overflow-hidden">
-        <img :src="user.bg" class="w-full h-full object-cover filter blur-[1px]" alt="background" />
+        <img :src="user.bg" class="w-full h-full object-cover blur-[1px]" alt="background" />
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
+        ></div>
       </div>
       <!-- 内容 -->
       <div class="absolute w-fit left-[24px] flex items-center bottom-[60px]">

@@ -14,6 +14,7 @@ export default function createVitePlugins(env: Record<string, string>): PluginOp
     // https://uvr.esm.is/introduction.html
     VueRouter({
       routesFolder: 'src/views',
+      exclude: ['src/views/**/components', 'src/views/**/hook'],
       dts: 'src/@types/typed-router.d.ts',
     }),
     // ⚠️ Vue must be placed after VueRouter()
