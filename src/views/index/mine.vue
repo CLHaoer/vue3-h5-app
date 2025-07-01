@@ -30,45 +30,80 @@ const handleSettingsClick = () => showToast('点击了设置')
 
 // 吸顶标题透明度逻辑
 const mainRef = useTemplateRef<HTMLElement | null>('mainRef')
-const { y } = useElementBounding(mainRef)
+const { y: mainY } = useElementBounding(mainRef)
 const navTitleOpacity = computed(() => {
-  // 0~60px区间渐变，60px后完全显示
-  const fadeEnd = 60
-  if (y.value === undefined) return 0
-  if (y.value < fadeEnd) {
-    return Math.min(1, 1 - y.value / fadeEnd)
-  }
-  return 0
+  if (mainY.value > 0) return 0
+  return Math.min(1, Math.abs(mainY.value) / 60)
 })
 const showNavBgc = computed(() => {
-  const fadeEnd = 60
-  if (y.value === undefined) return 'rgba(255,255,255,0)'
-  let opacity = 0
-  if (y.value < fadeEnd) {
-    opacity = Math.min(1, 1 - y.value / fadeEnd)
-  }
-  // 判断当前主题
+  if (mainY.value > 0) return 'transparent'
+  const opacity = Math.min(1, Math.abs(mainY.value) / 30)
   return ThemeIsDark.value
     ? `rgba(16,24,40,${opacity})` // dark:bg-gray-900
     : `rgba(251,249,250,${opacity})` // bg-gray-50
+})
+const scrollRef = useTemplateRef<HTMLElement | null>('scroll-container')
+const pullDistance = ref(0)
+let startY = 0
+let isTouching = false
+
+const onTouchStart = (e: TouchEvent) => {
+  if (scrollRef.value && scrollRef.value.scrollTop <= 0) {
+    isTouching = true
+    startY = e.touches[0].clientY
+  }
+}
+const onTouchMove = (e: TouchEvent) => {
+  if (!isTouching) return
+  const deltaY = e.touches[0].clientY - startY
+  if (deltaY > 0) {
+    pullDistance.value = Math.min(deltaY, 150) // 最大下拉120px
+    e.preventDefault() // 阻止浏览器下拉刷新
+  }
+}
+const onTouchEnd = () => {
+  isTouching = false
+  pullDistance.value = 0
+}
+
+onMounted(() => {
+  const el = scrollRef.value
+  if (el) {
+    el.addEventListener('touchstart', onTouchStart, { passive: false })
+    el.addEventListener('touchmove', onTouchMove, { passive: false })
+    el.addEventListener('touchend', onTouchEnd)
+  }
+})
+onUnmounted(() => {
+  const el = scrollRef.value
+  if (el) {
+    el.removeEventListener('touchstart', onTouchStart)
+    el.removeEventListener('touchmove', onTouchMove)
+    el.removeEventListener('touchend', onTouchEnd)
+  }
+})
+
+const userAreaHeight = computed(() => {
+  return `${(220 + pullDistance.value) / 100}rem`
 })
 </script>
 
 <template>
   <!-- 整体 -->
-  <div class="min-h-dvh">
+  <div ref="scroll-container" class="scroll-container h-dvh overflow-y-auto">
     <!-- 吸顶导航栏 -->
-    <nav
-      :style="`background-color:${showNavBgc}`"
-      class="fixed top-0 left-0 w-full h-[46px] flex items-center px-[20px] z-20 transition-colors duration-300 pointer-events-none"
+    <div
+      :style="{ backgroundColor: showNavBgc }"
+      class="van-nav-bar--fixed top-0 left-0 w-full h-[46px] flex items-center px-[20px] z-20 pointer-events-none"
     >
       <span
-        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[18px] font-bold text-gray-800 dark:text-gray-200 transition-opacity duration-300 pointer-events-auto select-none"
+        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[18px] font-bold text-gray-800 dark:text-gray-200 pointer-events-auto select-none"
         :style="{ opacity: navTitleOpacity }"
         >{{ user.name }}</span
       >
       <div
-        class="flex items-center text-gray-800 dark:text-gray-200 gap-[12px] pointer-events-auto ml-auto"
+        :class="{ 'text-gray-800': !ThemeIsDark && navTitleOpacity }"
+        class="flex items-center text-gray-200 gap-[12px] pointer-events-auto ml-auto"
       >
         <r-icon
           @click="handleThemeToggle"
@@ -85,11 +120,15 @@ const showNavBgc = computed(() => {
           class="text-[22px] cursor-pointer"
         />
       </div>
-    </nav>
+    </div>
     <!-- 顶部用户区域 -->
-    <div class="relative h-[220px] text-white">
+    <div
+      :style="{ height: userAreaHeight }"
+      :class="{ 'duration-[0s]': isTouching }"
+      class="relative h-[220px] transition-[height] ease-[ease] duration-[.3s] text-white"
+    >
       <!-- 背景 -->
-      <div class="absolute inset-0">
+      <div class="absolute inset-0 overflow-hidden">
         <img :src="user.bg" class="w-full h-full object-cover filter blur-[1px]" alt="background" />
       </div>
       <!-- 内容 -->
@@ -109,7 +148,7 @@ const showNavBgc = computed(() => {
     <!-- 主内容区 -->
     <div
       ref="mainRef"
-      class="relative h-[3000px] bg-gray-50 dark:bg-gray-900 rounded-t-[24px] -mt-[32px] p-[20px]"
+      class="relative h-[3000px] bg-gray-50 dark:bg-gray-900 rounded-t-[10px] -mt-[32px] p-[20px]"
     >
       <!-- 操作区 -->
       <div class="grid grid-cols-4 gap-[16px]">
@@ -145,4 +184,4 @@ const showNavBgc = computed(() => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss"></style>

@@ -23,7 +23,7 @@ interface Props {
   tag?: keyof HTMLElementTagNameMap
 }
 const props = withDefaults(defineProps<Props>(), {
-  size: 24
+  size: 18,
 })
 
 // 判断图标类型
@@ -41,9 +41,9 @@ const iconType = computed(() => {
 // 处理尺寸，确保带有单位
 const sizeWithUnit = computed(() => {
   if (typeof props.size === 'number') {
-    return `size-[${props.size}px] ${props.color}`
+    return `${props.size / 100}rem`
   }
-  return `size-[${props.size}] ${props.color}`
+  return props.size
 })
 
 // 定义点击事件
@@ -55,12 +55,25 @@ const onClick = (event: Event) => {
 </script>
 
 <template>
-  <van-icon v-if="iconType !== 'iconify'" v-bind="{
-    ...props,
-    name: props.icon,
-    ...$attrs
-  }" @click="onClick" />
-  <Icon v-else :icon="props.icon" v-bind="$attrs" :class="sizeWithUnit" @click="onClick" />
+  <van-icon
+    v-if="iconType !== 'iconify'"
+    v-bind="{
+      ...props,
+      name: props.icon,
+      ...$attrs,
+    }"
+    :style="{
+      fontSize: sizeWithUnit,
+    }"
+    @click="onClick"
+  />
+  <Icon
+    v-else
+    :icon="props.icon"
+    v-bind="$attrs"
+    :style="{ width: sizeWithUnit, height: sizeWithUnit }"
+    @click="onClick"
+  />
 </template>
 
 <style scoped></style>

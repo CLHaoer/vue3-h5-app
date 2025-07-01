@@ -2,12 +2,18 @@
 @import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
+@theme {
+  --radius-full: 9999px;
+}
 
 /*custom 自定义的样式--------------------------------*/
-body{
+body {
   @apply bg-gray-50 dark:bg-gray-900;
 }
-#app{
+html:has(.scroll-container) {
+  overflow: hidden;
+}
+#app {
   font-size: 14px;
   height: 100%;
   position: relative;

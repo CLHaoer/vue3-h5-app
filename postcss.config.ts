@@ -18,6 +18,7 @@ export default {
         '.van-popup--top',
         '.van-popup--left',
         '.van-popup--right',
+        '.tabbar-page',
         // 在这里添加你的选择器
       ],
     },
